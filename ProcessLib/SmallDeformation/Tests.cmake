@@ -60,6 +60,7 @@ if (OGS_USE_MFRONT)
     OgsTest(PROJECTFILE Mechanics/Linear/MFront/square_1e0_orthotropic_xyz.prj)
     OgsTest(PROJECTFILE Mechanics/Linear/MFront/square_1e0_orthotropic_45xy_z.prj)
     OgsTest(PROJECTFILE Mechanics/Linear/MFront/square_1e0_orthotropic_y-xz.prj)
+    OgsTest(PROJECTFILE Mechanics/Linear/MFront/slope.prj)
 # Linear elastic, no internal state variables, no external state variables.
 AddTest(
     NAME Mechanics_SDL_disc_with_hole_mfront
@@ -102,6 +103,23 @@ AddTest(
     ../../ring_plane_strain_pcs_0_ts_1_t_1.000000.vtu ring_plane_strain_pcs_0_ts_1_t_1.000000.vtu displacement displacement 1e-16 0
     ../../ring_plane_strain_pcs_0_ts_1_t_1.000000.vtu ring_plane_strain_pcs_0_ts_1_t_1.000000.vtu sigma sigma 1e-15 0
 )
+
+#slope stability test with MFront Mohr Coulomb implementation
+#Todo Tengfei ... input correct reference files
+AddTest(
+    NAME Mechanics_slope_stability_mfront
+    PATH Mechanics/MohrCoulombAbboSloan
+    EXECUTABLE ogs
+    EXECUTABLE_ARGS slope.prj
+    TESTER vtkdiff
+    REQUIREMENTS NOT OGS_USE_MPI
+    # See also the prj file.
+#    DIFF_DATA
+#    cube_1e0_dp_ref_created_with_OGS_Ehlers.vtu cube_1e0_dp_pcs_0_ts_203_t_5.100000.vtu displacement displacement 1e-14 0
+#    cube_1e0_dp_ref_created_with_OGS_Ehlers.vtu cube_1e0_dp_pcs_0_ts_203_t_5.100000.vtu sigma sigma 2e-13 0
+#    cube_1e0_dp_ref_created_with_OGS_Ehlers.vtu cube_1e0_dp_pcs_0_ts_203_t_5.100000.vtu epsilon epsilon 1e-14 0
+)
+
 endif()
 
 AddTest(
