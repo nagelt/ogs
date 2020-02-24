@@ -114,10 +114,8 @@ AddTest(
     TESTER vtkdiff
     REQUIREMENTS NOT OGS_USE_MPI
     # See also the prj file.
-#    DIFF_DATA
-#    cube_1e0_dp_ref_created_with_OGS_Ehlers.vtu cube_1e0_dp_pcs_0_ts_203_t_5.100000.vtu displacement displacement 1e-14 0
-#    cube_1e0_dp_ref_created_with_OGS_Ehlers.vtu cube_1e0_dp_pcs_0_ts_203_t_5.100000.vtu sigma sigma 2e-13 0
-#    cube_1e0_dp_ref_created_with_OGS_Ehlers.vtu cube_1e0_dp_pcs_0_ts_203_t_5.100000.vtu epsilon epsilon 1e-14 0
+    DIFF_DATA
+    slope_pcs_0_ts_501_t_5.000000.vtu slope_pcs_0_ts_501_t_5.000000.vtu displacement displacement 1e-14 0
 )
 
 endif()
