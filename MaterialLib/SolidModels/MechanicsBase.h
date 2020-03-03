@@ -155,6 +155,13 @@ struct MechanicsBase
             "getBulkModulus is not yet implemented for this Solid Material.");
     }
 
+    virtual double getShearModulus(double const /*t*/,
+                                  ParameterLib::SpatialPosition const& /*x*/) const
+    {
+        OGS_FATAL(
+            "getBulkModulus is not yet implemented for this Solid Material.");
+    }
+
     /// Get temperature related coefficient for the global assembly if there is
     /// one.
     virtual double getTemperatureRelatedCoefficient(

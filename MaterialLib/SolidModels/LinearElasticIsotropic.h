@@ -54,6 +54,13 @@ public:
                    (3 * (1 - 2 * _poissons_ratio(t, x)[0]));
         }
 
+         /// the shear modulus.
+        double shear_modulus(double const t, X const& x) const
+        {
+            return _youngs_modulus(t, x)[0] /
+                   (2 * (1 + _poissons_ratio(t, x)[0]));
+        }
+
     private:
         P const& _youngs_modulus;
         P const& _poissons_ratio;
@@ -108,6 +115,12 @@ public:
                           ParameterLib::SpatialPosition const& x) const override
     {
         return _mp.bulk_modulus(t, x);
+    }
+
+    double getShearModulus(double const t,
+                          ParameterLib::SpatialPosition const& x) const override
+    {
+        return _mp.shear_modulus(t, x);
     }
 
 
