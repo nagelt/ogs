@@ -23,6 +23,7 @@
 #include "IdealGasLaw.h"
 #include "LinearProperty.h"
 #include "ParameterProperty.h"
+#include "PermeabilityEmbeddedFracture.h"
 #include "PorosityFromMassBalance.h"
 #include "RelativePermeability/RelPermBrooksCorey.h"
 #include "RelativePermeability/RelPermLiakopoulos.h"

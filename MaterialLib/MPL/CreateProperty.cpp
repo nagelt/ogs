@@ -88,6 +88,11 @@ std::unique_ptr<MaterialPropertyLib::Property> createProperty(
         return createTransportPorosityFromMassBalance(config, parameters);
     }
 
+    if (boost::iequals(property_type, "PermeabilityEmbeddedFracture"))
+    {
+        return createPermeabilityEmbeddedFracture(config);
+    }
+
     if (boost::iequals(property_type, "SaturationBrooksCorey"))
     {
         return createSaturationBrooksCorey(config);

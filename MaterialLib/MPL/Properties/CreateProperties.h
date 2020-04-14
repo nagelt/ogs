@@ -24,6 +24,7 @@
 #include "CreateIdealGasLaw.h"
 #include "CreateLinearProperty.h"
 #include "CreateParameterProperty.h"
+#include "CreatePermeabilityEmbeddedFracture.h"
 #include "CreatePermeabilityOrthotropicPowerLaw.h"
 #include "CreatePorosityFromMassBalance.h"
 #include "CapillaryPressureSaturation/CreateSaturationBrooksCorey.h"
