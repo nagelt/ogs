@@ -24,6 +24,7 @@
 #include "LinearProperty.h"
 #include "ParameterProperty.h"
 #include "PermeabilityEmbeddedFracture.h"
+#include "PermeabilityEmbeddedFracturePoly.h"
 #include "PorosityFromMassBalance.h"
 #include "RelativePermeability/RelPermBrooksCorey.h"
 #include "RelativePermeability/RelPermLiakopoulos.h"
