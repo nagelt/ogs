@@ -217,58 +217,53 @@ void HydroMechanicsProcess<DisplacementDim>::initializeConcreteProcess(
                              std::move(get_ip_values_function)));
     };
 
-    add_secondary_variable(
-        "sigma_xx", 1, &LocalAssemblerIF::getIntPtSigmaXX);
+    add_secondary_variable("sigma_xx", 1, &LocalAssemblerIF::getIntPtSigmaXX);
 
-    add_secondary_variable(
-        "sigma_yy", 1, &LocalAssemblerIF::getIntPtSigmaYY);
+    add_secondary_variable("sigma_yy", 1, &LocalAssemblerIF::getIntPtSigmaYY);
 
-    add_secondary_variable(
-        "sigma_zz", 1, &LocalAssemblerIF::getIntPtSigmaZZ);
+    add_secondary_variable("sigma_zz", 1, &LocalAssemblerIF::getIntPtSigmaZZ);
 
-    add_secondary_variable(
-        "sigma_xy", 1, &LocalAssemblerIF::getIntPtSigmaXY);
+    add_secondary_variable("sigma_xy", 1, &LocalAssemblerIF::getIntPtSigmaXY);
 
     if (DisplacementDim == 3)
     {
-        add_secondary_variable(
-            "sigma_xz", 1, &LocalAssemblerIF::getIntPtSigmaXZ);
+        add_secondary_variable("sigma_xz", 1,
+                               &LocalAssemblerIF::getIntPtSigmaXZ);
 
-        add_secondary_variable(
-            "sigma_yz", 1, &LocalAssemblerIF::getIntPtSigmaYZ);
+        add_secondary_variable("sigma_yz", 1,
+                               &LocalAssemblerIF::getIntPtSigmaYZ);
     }
 
-    add_secondary_variable(
-        "epsilon_xx", 1, &LocalAssemblerIF::getIntPtEpsilonXX);
+    add_secondary_variable("epsilon_xx", 1,
+                           &LocalAssemblerIF::getIntPtEpsilonXX);
 
-    add_secondary_variable(
-        "epsilon_yy", 1, &LocalAssemblerIF::getIntPtEpsilonYY);
+    add_secondary_variable("epsilon_yy", 1,
+                           &LocalAssemblerIF::getIntPtEpsilonYY);
 
-    add_secondary_variable(
-        "epsilon_zz", 1, &LocalAssemblerIF::getIntPtEpsilonZZ);
+    add_secondary_variable("epsilon_zz", 1,
+                           &LocalAssemblerIF::getIntPtEpsilonZZ);
 
-    add_secondary_variable(
-        "epsilon_xy", 1, &LocalAssemblerIF::getIntPtEpsilonXY);
+    add_secondary_variable("epsilon_xy", 1,
+                           &LocalAssemblerIF::getIntPtEpsilonXY);
 
     if (DisplacementDim == 3)
     {
-        add_secondary_variable(
-            "epsilon_xz", 1, &LocalAssemblerIF::getIntPtEpsilonXZ);
+        add_secondary_variable("epsilon_xz", 1,
+                               &LocalAssemblerIF::getIntPtEpsilonXZ);
 
-        add_secondary_variable(
-            "epsilon_yz", 1, &LocalAssemblerIF::getIntPtEpsilonYZ);
+        add_secondary_variable("epsilon_yz", 1,
+                               &LocalAssemblerIF::getIntPtEpsilonYZ);
     }
 
-    add_secondary_variable("velocity",
-                           DisplacementDim,
-                           &LocalAssemblerIF::getIntPtDarcyVelocity);
+    add_secondary_variable(
+        "velocity", DisplacementDim, &LocalAssemblerIF::getIntPtDarcyVelocity);
 
     //
     // enable output of internal variables defined by material models
     //
     ProcessLib::Deformation::solidMaterialInternalToSecondaryVariables<
         LocalAssemblerIF>(_process_data.solid_materials,
-                                 add_secondary_variable);
+                          add_secondary_variable);
 
     _process_data.pressure_interpolated =
         MeshLib::getOrCreateMeshProperty<double>(
@@ -377,9 +372,9 @@ void HydroMechanicsProcess<DisplacementDim>::initializeConcreteProcess(
     }
 
     // Initialize local assemblers after all variables have been set.
-    GlobalExecutor::executeMemberOnDereferenced(
-        &LocalAssemblerIF::initialize, _local_assemblers,
-        *_local_to_global_index_map);
+    GlobalExecutor::executeMemberOnDereferenced(&LocalAssemblerIF::initialize,
+                                                _local_assemblers,
+                                                *_local_to_global_index_map);
 }
 
 template <int DisplacementDim>

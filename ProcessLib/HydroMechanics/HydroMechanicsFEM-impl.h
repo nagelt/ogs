@@ -199,8 +199,7 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
     auto const& gas = medium->phase("Gas");
     MPL::VariableArray vars;
     constexpr int symmetric_tensor_size =
-            MathLib::KelvinVector::KelvinVectorDimensions<
-                DisplacementDim>::value;
+        MathLib::KelvinVector::KelvinVectorDimensions<DisplacementDim>::value;
     using SymmetricTensor = Eigen::Matrix<double, symmetric_tensor_size, 1>;
 
     auto const T_ref =
@@ -332,8 +331,8 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
             rho_fr * alpha * N_p.transpose() * identity2.transpose() * B * w;
 
         Kpu_k.noalias() += dNdx_p.transpose() * dkde *
-                              (dNdx_p * p - rho_fr * b) *
-                              identity2.transpose() * B * rho_fr / mu;
+                           (dNdx_p * p - rho_fr * b) * identity2.transpose() *
+                           B * rho_fr / mu;
 
         auto const G = solid_material.getShearModulus(t, x_position);
 
@@ -351,7 +350,7 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
     {
         storage_p = storage_p.colwise().sum().eval().asDiagonal();
 
-        if constexpr(pressure_size == displacement_size)
+        if constexpr (pressure_size == displacement_size)
         {
             Kpu = Kpu.colwise().sum().eval().asDiagonal();
             Kpu_k = Kpu_k.colwise().sum().eval().asDiagonal();
@@ -420,8 +419,7 @@ HydroMechanicsLocalAssembler<ShapeFunctionDisplacement, ShapeFunctionPressure,
     double const dt = std::numeric_limits<double>::quiet_NaN();
 
     constexpr int symmetric_tensor_size =
-            MathLib::KelvinVector::KelvinVectorDimensions<
-                DisplacementDim>::value;
+        MathLib::KelvinVector::KelvinVectorDimensions<DisplacementDim>::value;
     using SymmetricTensor = Eigen::Matrix<double, symmetric_tensor_size, 1>;
 
     vars[static_cast<int>(MPL::Variable::temperature)] =
@@ -985,8 +983,8 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
         vars[static_cast<int>(MPL::Variable::phase_pressure)] =
             _ip_data[ip].N_p.dot(p);
         k_sum += MPL::getSymmetricTensor<DisplacementDim>(
-                    medium->property(MPL::PropertyType::permeability)
-                        .value(vars, x_position, t, dt));
+            medium->property(MPL::PropertyType::permeability)
+                .value(vars, x_position, t, dt));
     }
 
     Eigen::Map<Eigen::VectorXd>(
