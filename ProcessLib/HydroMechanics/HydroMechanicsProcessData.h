@@ -57,6 +57,8 @@ struct HydroMechanicsProcessData
 
     bool const mass_lumping;
 
+    double const stabilization_factor;
+
     MeshLib::PropertyVector<double>* pressure_interpolated = nullptr;
     std::array<MeshLib::PropertyVector<double>*, 3> principal_stress_vector = {
         nullptr, nullptr, nullptr};
@@ -65,6 +67,8 @@ struct HydroMechanicsProcessData
     /// Total permeability as a symmetric tensor of length 4 or 6
     /// with elements in the order k_xx, k_yy, k_zz, k_xy, k_yz, k_xz
     MeshLib::PropertyVector<double>* permeability = nullptr;
+
+    MeshLib::PropertyVector<double>* characteristic_length = nullptr;
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
 };

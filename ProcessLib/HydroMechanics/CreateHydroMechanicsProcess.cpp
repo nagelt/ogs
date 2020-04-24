@@ -134,6 +134,10 @@ std::unique_ptr<Process> createHydroMechanicsProcess(
     //! \ogs_file_param{prj__processes__process__HYDRO_MECHANICS__mass_lumping}
     auto mass_lumping = config.getConfigParameter<bool>("mass_lumping", false);
 
+    //! \ogs_file_param{prj__processes__process__HYDRO_MECHANICS__stabilization_factor}
+    auto stabilization_factor =
+        config.getConfigParameter<double>("stabilization_factor", 0.);
+
     auto media_map =
         MaterialPropertyLib::createMaterialSpatialDistributionMap(media, mesh);
 
@@ -169,7 +173,7 @@ std::unique_ptr<Process> createHydroMechanicsProcess(
         materialIDs(mesh),     std::move(media_map),
         std::move(solid_constitutive_relations),
         initial_stress,        specific_body_force,
-        mass_lumping};
+        mass_lumping,          stabilization_factor};
 
     SecondaryVariableCollection secondary_variables;
 

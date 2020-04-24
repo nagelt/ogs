@@ -300,6 +300,32 @@ void HydroMechanicsProcess<DisplacementDim>::initializeConcreteProcess(
         MeshLib::MeshItemType::Cell,
         MathLib::KelvinVector::KelvinVectorDimensions<DisplacementDim>::value);
 
+    _process_data.characteristic_length =
+        MeshLib::getOrCreateMeshProperty<double>(
+            const_cast<MeshLib::Mesh&>(mesh), "characteristic_length",
+            MeshLib::MeshItemType::Cell, 3);
+
+    // Calculate characteristic element lengths for FIC-stabilization
+    for (auto const& elem : mesh.getElements())
+    {
+        Eigen::Vector3d h = Eigen::Vector3d::Zero();
+        auto const numNodes = elem->getNumberOfNodes();
+        for (unsigned ni = 0; ni < numNodes - 1; ni++)
+        {
+            auto const coords_i = elem->getNode(ni)->getCoords();
+            for (unsigned nj = ni + 1; nj < numNodes; nj++)
+            {
+                auto const coords_j = elem->getNode(nj)->getCoords();
+                h[0] = std::max(h[0], std::abs(coords_j[0] - coords_i[0]));
+                h[1] = std::max(h[1], std::abs(coords_j[1] - coords_i[1]));
+                h[2] = std::max(h[2], std::abs(coords_j[2] - coords_i[2]));
+            }
+        }
+
+        Eigen::Map<Eigen::Vector3d>(
+            &(*_process_data.characteristic_length)[elem->getID() * 3], 3) = h;
+    }
+
     // Set initial conditions for integration point data.
     for (auto const& ip_writer : _integration_point_writer)
     {

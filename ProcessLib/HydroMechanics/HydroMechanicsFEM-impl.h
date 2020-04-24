@@ -12,7 +12,6 @@
 #pragma once
 
 #include "HydroMechanicsFEM.h"
-
 #include "MaterialLib/MPL/Medium.h"
 #include "MaterialLib/MPL/Property.h"
 #include "MaterialLib/MPL/Utils/FormEigenTensor.h"
@@ -163,6 +162,10 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
         ShapeMatricesTypePressure::NodalMatrixType::Zero(pressure_size,
                                                          pressure_size);
 
+    typename ShapeMatricesTypePressure::NodalMatrixType p_stab =
+        ShapeMatricesTypePressure::NodalMatrixType::Zero(pressure_size,
+                                                         pressure_size);
+
     typename ShapeMatricesTypeDisplacement::template MatrixType<
         displacement_size, pressure_size>
         Kup = ShapeMatricesTypeDisplacement::template MatrixType<
@@ -204,6 +207,13 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
         medium->property(MPL::PropertyType::reference_temperature)
             .template value<double>(vars, x_position, t, dt);
     vars[static_cast<int>(MPL::Variable::temperature)] = T_ref;
+
+    Eigen::Matrix<double, 1, DisplacementDim> const h =
+        Eigen::Map<Eigen::VectorXd>(
+            &(*_process_data.characteristic_length)[_element.getID() * 3],
+            DisplacementDim).transpose();
+
+    auto const stab_factor = _process_data.stabilization_factor;
 
     for (unsigned ip = 0; ip < n_integration_points; ip++)
     {
@@ -322,6 +332,12 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
         Kpu_k.noalias() += dNdx_p.transpose() * dkde *
                               (dNdx_p * p - rho_fr * b) *
                               identity2.transpose() * B * rho_fr / mu;
+
+        auto const G = solid_material.getShearModulus(t, x_position);
+
+        p_stab.noalias() += N_p.transpose() * (h / 2.0) * dNdx_p * rho_fr * w *
+                            ((alpha - porosity) * beta_SR + porosity * beta_p +
+                              alpha * alpha / (K_S + G * 4 / 3)) * stab_factor;
     }
     // displacement equation, pressure part
     local_Jac
@@ -338,14 +354,14 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
             Kpu = Kpu.colwise().sum().eval().asDiagonal();
             Kpu_k = Kpu_k.colwise().sum().eval().asDiagonal();
         }
-
     }
 
     // pressure equation, pressure part.
     local_Jac
         .template block<pressure_size, pressure_size>(pressure_index,
                                                       pressure_index)
-        .noalias() = laplace_p + storage_p / dt + add_p_derivative;
+        .noalias() =
+        laplace_p + storage_p / dt + add_p_derivative - p_stab / dt;
 
     // pressure equation, displacement part.
     local_Jac
@@ -355,7 +371,7 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
 
     // pressure equation
     local_rhs.template segment<pressure_size>(pressure_index).noalias() -=
-        laplace_p * p + storage_p * p_dot + Kpu * u_dot;
+        laplace_p * p + storage_p * p_dot + Kpu * u_dot - p_stab * p_dot;
 
     // displacement equation
     local_rhs.template segment<displacement_size>(displacement_index)
