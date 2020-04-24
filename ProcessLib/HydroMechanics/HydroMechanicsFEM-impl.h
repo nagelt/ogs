@@ -284,6 +284,8 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
 
         auto const K_over_mu = K / mu;
 
+        auto const beta_SR = (1.0 - alpha) / K_S;
+
         auto const& identity2 = MathLib::KelvinVector::Invariants<
             MathLib::KelvinVector::KelvinVectorDimensions<
                 DisplacementDim>::value>::identity2;
@@ -314,7 +316,7 @@ void HydroMechanicsLocalAssembler<ShapeFunctionDisplacement,
 
         storage_p.noalias() +=
             rho_fr * N_p.transpose() * N_p * w *
-            ((alpha - porosity) * (1.0 - alpha) / K_S + porosity * beta_p);
+            ((alpha - porosity) * beta_SR + porosity * beta_p);
 
         add_p_derivative.noalias() += rho_fr * beta_p * dNdx_p.transpose() *
                                       K_over_mu *
