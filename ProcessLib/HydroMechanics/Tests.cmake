@@ -483,6 +483,45 @@ AddTest(
     square_pcs_0_ts_7_t_1000000.000000.vtu square_pcs_0_ts_7_t_1000000.000000.vtu displacement displacement 1e-15 0
 )
 
+AddTest(
+    NAME HydroMechanics_Permeability_EmbeddedFracturePoly_x
+    PATH HydroMechanics/Permeability/EmbeddedFracturePoly
+    EXECUTABLE ogs
+    EXECUTABLE_ARGS x_strain_y_flow.prj
+    WRAPPER time
+    TESTER vtkdiff
+    REQUIREMENTS NOT OGS_USE_MPI
+    DIFF_DATA
+    x_strain_y_flow_pcs_0_ts_10_t_1000000000.000000.vtu x_strain_y_flow_pcs_0_ts_10_t_1000000000.000000.vtu pressure pressure 0 1e-15
+    x_strain_y_flow_pcs_0_ts_10_t_1000000000.000000.vtu x_strain_y_flow_pcs_0_ts_10_t_1000000000.000000.vtu displacement displacement 1e-15 0
+)
+
+AddTest(
+    NAME HydroMechanics_Permeability_EmbeddedFracturePoly_y
+    PATH HydroMechanics/Permeability/EmbeddedFracturePoly
+    EXECUTABLE ogs
+    EXECUTABLE_ARGS y_strain_z_flow.prj
+    WRAPPER time
+    TESTER vtkdiff
+    REQUIREMENTS NOT OGS_USE_MPI
+    DIFF_DATA
+    y_strain_z_flow_pcs_0_ts_10_t_1000000000.000000.vtu y_strain_z_flow_pcs_0_ts_10_t_1000000000.000000.vtu pressure pressure 0 1e-15
+    y_strain_z_flow_pcs_0_ts_10_t_1000000000.000000.vtu y_strain_z_flow_pcs_0_ts_10_t_1000000000.000000.vtu displacement displacement 1e-15 0
+)
+
+AddTest(
+    NAME HydroMechanics_Permeability_EmbeddedFracturePoly_z
+    PATH HydroMechanics/Permeability/EmbeddedFracturePoly
+    EXECUTABLE ogs
+    EXECUTABLE_ARGS z_strain_x_flow.prj
+    WRAPPER time
+    TESTER vtkdiff
+    REQUIREMENTS NOT OGS_USE_MPI
+    DIFF_DATA
+    z_strain_x_flow_pcs_0_ts_10_t_1000000000.000000.vtu z_strain_x_flow_pcs_0_ts_10_t_1000000000.000000.vtu pressure pressure 0 1e-15
+    z_strain_x_flow_pcs_0_ts_10_t_1000000000.000000.vtu z_strain_x_flow_pcs_0_ts_10_t_1000000000.000000.vtu displacement displacement 1e-15 0
+)
+
 ## Test as the reference of InjectionProduction1D
 AddTest(
     NAME MonolithicInjectionProduction1D
