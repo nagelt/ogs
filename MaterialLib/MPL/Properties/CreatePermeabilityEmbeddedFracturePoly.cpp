@@ -9,12 +9,14 @@
  */
 
 #include "BaseLib/ConfigTree.h"
+#include "ParameterLib/Utils.h"
 #include "PermeabilityEmbeddedFracturePoly.h"
 
 namespace MaterialPropertyLib
 {
 std::unique_ptr<Property> createPermeabilityEmbeddedFracturePoly(
-    BaseLib::ConfigTree const& config)
+    BaseLib::ConfigTree const& config,
+    std::vector<std::unique_ptr<ParameterLib::ParameterBase>> const& parameters)
 {
     //! \ogs_file_param{properties__property__type}
     config.checkConfigParameter("type", "PermeabilityEmbeddedFracturePoly");
@@ -75,6 +77,13 @@ std::unique_ptr<Property> createPermeabilityEmbeddedFracturePoly(
                         n2[0], n2[1], n2[2],
                         n3[0], n3[1], n3[2];
 
+    std::string const parameter_name =
+        //! \ogs_file_param{properties__property__TransportPorosityFromMassBalance__fracture_rotation}
+        config.getConfigParameter<std::string>("fracture_rotation");
+
+    auto const& fracture_rotation = ParameterLib::findParameter<double>(
+            parameter_name, parameters, 0, nullptr);
+
     int const Dim =
         //! \ogs_file_param{properties__property__PermeabilityEmbeddedFracturePoly__Dim}
         config.getConfigParameter<int>("dim");
@@ -85,7 +94,8 @@ std::unique_ptr<Property> createPermeabilityEmbeddedFracturePoly(
             intrinsic_permeability,
             mean_fracture_distances,
             threshold_strains,
-            fracture_normals);
+            fracture_normals,
+            fracture_rotation);
     }
     if (Dim == 3)
     {
@@ -93,7 +103,8 @@ std::unique_ptr<Property> createPermeabilityEmbeddedFracturePoly(
             intrinsic_permeability,
             mean_fracture_distances,
             threshold_strains,
-            fracture_normals);
+            fracture_normals,
+            fracture_rotation);
     }
 
     OGS_FATAL("The Dimension can only be 2 or 3.");

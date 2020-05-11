@@ -23,11 +23,13 @@ PermeabilityEmbeddedFracturePoly<DisplacementDim>::PermeabilityEmbeddedFractureP
     double const intrinsic_permeability,
     std::vector<double> const mean_fracture_distances,
     std::vector<double> const threshold_strains,
-    Eigen::Matrix<double, 3, 3> const fracture_normals)
+    Eigen::Matrix<double, 3, 3> const fracture_normals,
+    ParameterLib::Parameter<double> const& fracture_rotation)
     : _n(fracture_normals),
       _k(intrinsic_permeability),
       _a(mean_fracture_distances),
       _e0(threshold_strains),
+      _phi(fracture_rotation),
       _b0(std::sqrt(12 * _k))
 {};
 
@@ -46,9 +48,15 @@ PropertyDataType PermeabilityEmbeddedFracturePoly<DisplacementDim>::value(
 
     SymmetricTensor result = SymmetricTensor::Zero();
 
+    double const phi = std::get<double>(fromVector(_phi(t, pos)));
+
+    Eigen::Matrix3d const rotMat = (Eigen::Matrix3d() << cos(phi), -sin(phi), 0,
+                                    sin(phi), cos(phi), 0, 0, 0, 1)
+                                       .finished();
+
     for (int i = 0; i < 3; i++)
     {
-        Eigen::Matrix<double, 3, 1> const ni = _n.col(i);
+        Eigen::Matrix<double, 3, 1> const ni = rotMat * _n.col(i);
         double const e_n = (eps * ni).dot(ni.transpose());
 
         double const H_de = (e_n > _e0[i]) ? 1.0 : 0.0;

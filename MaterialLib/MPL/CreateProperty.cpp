@@ -95,7 +95,7 @@ std::unique_ptr<MaterialPropertyLib::Property> createProperty(
 
 	if (boost::iequals(property_type, "PermeabilityEmbeddedFracturePoly"))
     {
-        return createPermeabilityEmbeddedFracturePoly(config);
+        return createPermeabilityEmbeddedFracturePoly(config, parameters);
     }
 
     if (boost::iequals(property_type, "SaturationBrooksCorey"))

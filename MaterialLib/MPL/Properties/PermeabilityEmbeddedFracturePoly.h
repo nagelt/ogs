@@ -11,6 +11,7 @@
 
 #include "BaseLib/ConfigTree.h"
 #include "MaterialLib/MPL/Property.h"
+#include "ParameterLib/Parameter.h"
 
 namespace MaterialPropertyLib
 {
@@ -33,12 +34,14 @@ private:
     std::vector<double> const _e0;
     double const _b0;
     Eigen::Matrix<double, 3, 3> const _n;
+    ParameterLib::Parameter<double> const& _phi;
  public:
     PermeabilityEmbeddedFracturePoly(
         double const intrinsic_permeability,
         std::vector<double> const mean_fracture_distances,
         std::vector<double> const threshold_strains,
-        Eigen::Matrix<double, 3, 3> const fracture_normals);
+        Eigen::Matrix<double, 3, 3> const fracture_normals,
+         ParameterLib::Parameter<double> const& fracture_rotation);
     /// This method assigns a pointer to the material object that is the owner
     /// of this property
     void setScale(

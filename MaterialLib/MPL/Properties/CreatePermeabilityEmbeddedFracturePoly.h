@@ -20,5 +20,7 @@ class ConfigTree;
 namespace MaterialPropertyLib
 {
 std::unique_ptr<Property> createPermeabilityEmbeddedFracturePoly(
-    BaseLib::ConfigTree const& config);
+    BaseLib::ConfigTree const& config,
+    std::vector<std::unique_ptr<ParameterLib::ParameterBase>> const& parameters)
+    ;
 }  // namespace MaterialPropertyLib
