@@ -67,12 +67,12 @@ PropertyDataType PermeabilityEmbeddedFracturePoly<DisplacementDim>::value(
         if (DisplacementDim == 2)
         {
             part_result << 1 - ni[0] * ni[0], 1 - ni[1] * ni[1], 1 - ni[2] * ni[2],
-                ni[0] * ni[1];
+                -ni[0] * ni[1];
         }
         else if (DisplacementDim == 3)
         {
             part_result << 1 - ni[0] * ni[0], 1 - ni[1] * ni[1], 1 - ni[2] * ni[2],
-                ni[0] * ni[1], ni[1] * ni[2], ni[0] * ni[2];
+                -ni[0] * ni[1], -ni[1] * ni[2], -ni[0] * ni[2];
         }
         part_result *= coeff;
         result += part_result;
