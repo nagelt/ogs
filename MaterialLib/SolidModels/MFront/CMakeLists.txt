@@ -23,7 +23,8 @@ mfront_behaviours_check_library(OgsMFrontBehaviour
                                 Lubby2mod
                                 MohrCoulombAbboSloanAniso
                                 MohrCoulombAbboSloanUBI
-                                MohrCoulombAbboSloanUBIOrtho)
+                                MohrCoulombAbboSloanUBIOrtho
+                                MohrCoulombAbboSloanNorton)
 
 target_include_directories(MaterialLib_SolidModels_MFront
                            PUBLIC ThirdParty/MGIS/include)
