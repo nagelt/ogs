@@ -708,9 +708,8 @@ void RichardsMechanicsLocalAssembler<ShapeFunctionDisplacement,
 
         variables[static_cast<int>(
             MPL::Variable::effective_pore_pressure_rate)] =
-            (chi_S_L * (-p_cap_ip) -
-             chi_S_L_prev * (-p_cap_ip + p_cap_dot_ip * dt)) /
-            dt;
+            (chi_S_L - chi_S_L_prev) / dt * (-p_cap_ip) -
+            chi_S_L * p_cap_dot_ip;
 
         // Set volumetric strain rate for the general case without swelling.
         double const div_u_dot = identity2.transpose() * B * u_dot;
